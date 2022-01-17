@@ -42,7 +42,7 @@ def number():
     keyboard.add(
         types.KeyboardButton('Number')
     )
-    keyboard.add(types.KeyboardButton('Назад'))
+    keyboard.add(types.KeyboardButton('⬅️Назад'))
     return keyboard
 
 
@@ -54,7 +54,7 @@ def get_id_hotel(hotels):
         keyboard.add(
             types.KeyboardButton(pk),
         )
-    keyboard.add(types.KeyboardButton('Назад'))
+    keyboard.add(types.KeyboardButton('⬅️Назад'))
 
     return keyboard
 
@@ -63,8 +63,8 @@ def get_contact():
     keyboard = types.ReplyKeyboardMarkup(row_width=1)
 
     keyboard.add(
-        types.KeyboardButton('Назад'),
-        types.KeyboardButton('Book', request_contact=True)
+        types.KeyboardButton('⬅️Назад'),
+
     )
     # bot.send_message(message.chat.id, 'Hello', reply_markup=keyboard)
     # bot.register_next_step_handler(message, show_data)
@@ -79,18 +79,19 @@ def tour_id_keyboard(tours):
         keyboard.add(
             types.KeyboardButton(pk),
         )
-    keyboard.add(types.KeyboardButton('Назад'), )
+    keyboard.add(types.KeyboardButton('⬅️Назад'), )
 
     return keyboard
 
 
 def choose_keyboard():
-    keyboard = types.ReplyKeyboardMarkup(row_width=3)
+    keyboard = types.ReplyKeyboardMarkup(row_width=1)
 
     keyboard.add(
-        types.KeyboardButton('Sayohat turlari'),
-        types.KeyboardButton('Biz Milan bog\'laning'),
-        types.KeyboardButton('Mehmonxonalar')
+        types.KeyboardButton('✈️ Наши Туры'),
+        types.KeyboardButton('📍Наш адрес'),
+        types.KeyboardButton('🏢Гостиницы'),
+        types.KeyboardButton('☎️Наш телефонный номер'),
     )
     # print(tours['']['title'])
     return keyboard
@@ -99,7 +100,17 @@ def choose_keyboard():
 def back_keyboard():
     keyboard = types.ReplyKeyboardMarkup()
     keyboard.add(
-        types.KeyboardButton('Назад')
+        types.KeyboardButton('⬅️Назад')
+    )
+    return keyboard
+
+
+def book():
+    keyboard = types.ReplyKeyboardMarkup(row_width=1)
+
+    keyboard.add(
+        types.KeyboardButton('⬅️Назад'),
+        types.KeyboardButton('📩Оставить Заявку', request_contact=True)
     )
     return keyboard
 # #     keyboard = types.InlineKeyboardMarkup()

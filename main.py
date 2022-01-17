@@ -8,8 +8,15 @@ import urllib.request
 bot = telebot.TeleBot("5011031911:AAE3wQAvX2ZsZCThKw2KhLwC3rPzkJob9NU")
 
 
+def next(message):
+    if message.text == '⬅️Назад':
+        keyboard_answer(message)
+    else:
+        info(message)
+
+
 def chek(message):
-    if message.text == 'Назад':
+    if message.text == '⬅️Назад':
         tour(message)
     else:
         get_number(message)
@@ -17,21 +24,38 @@ def chek(message):
 
 
 def back(message):
-    if message.text == 'Назад':
-        hotel(message)
+    if message.text == '⬅️Назад':
+        tour(message)
     else:
-        info(message)
-        # bot.send_message(message.chat.id, 'Спасибо вам мы выйдем вам на связь')
+        contact_message(message)
+
+
+
+def location(message):
+    bot.send_location(
+        message.chat.id,
+        41.352306269133685,
+        69.20365553816254, reply_markup=back_keyboard()
+    )
+    bot.register_next_step_handler(message, keyboard_answer)
+
 
 
 def validation(message):
-    if message.text == 'Назад':
+    if message.text == '⬅️Назад':
         hotel(message)
 
     else:
-        start(message)
-        print(message.text)
-        bot.send_message(message.chat.id, 'Спасибо вам мы выйдем вам на связь')
+        contact_message(message)
+
+
+
+def checker(message):
+    if message.text == '⬅️Назад':
+        keyboard_answer(message)
+    else:
+        tours(message)
+
 
 
 def info(message):
@@ -44,7 +68,7 @@ def info(message):
                 message.chat.id,
                 photo=urllib.request.urlopen(url).read(),
                 caption=f"{result[i]['short_descriptions']}",
-                reply_markup=get_contact()
+                reply_markup=book()
             )
 
     # bot.send_message(message.chat.id,
@@ -63,21 +87,10 @@ def hotel(message):
     keyboard = get_id_hotel(data)
 
     bot.send_message(message.chat.id, result, reply_markup=keyboard)
-    bot.register_next_step_handler(message, back)
+    bot.register_next_step_handler(message, next)
 
 
-def contact(message):
-    print(message)
 
-    bot.send_message(message.chat.id, 'sfdsfdsfsdfdsf', reply_markup=back_keyboard())
-    bot.register_next_step_handler(message, tour)
-
-
-def checker(message):
-    if message.text == 'Назад':
-        keyboard_answer(message)
-    else:
-        tours(message)
 
 
 def tours(message):
@@ -92,7 +105,7 @@ def tours(message):
                 message.chat.id,
                 photo=urllib.request.urlopen(url).read(),
                 caption=f"{result[i]['short_description']}",
-                reply_markup=get_contact()
+                reply_markup=book()
             )
 
     # bot.send_message(
@@ -109,7 +122,6 @@ def tour(message):
     result = ''
     for i in data:
         result += f"{i['title']}\n"
-
     keyboard = tour_id_keyboard(data)
 
     bot.send_message(message.chat.id, result, reply_markup=keyboard)
@@ -126,30 +138,15 @@ def get_number(message):
 
     bot.send_message(message.chat.id, 'asdasdasdadasdasd')
     bot.register_next_step_handler(message, chek)
-#c
-#
-# def get_surname(message):
-#     print(message.text)
-#     keyboard = surname()
-#
-#     bot.send_message(message.chat.id, 'Familiyangizni kiriting')
-#     bot.register_next_step_handler(message, get_number)
-#
-#
-# def booking(message):
-#     print(message.text)
-#     keyboard = name()
-#
-#     bot.send_message(message.chat.id, 'Ismingizni kiriting', reply_markup=types.ReplyKeyboardRemove())
-#     bot.register_next_step_handler(message, get_surname)
+
 
 
 def keyboard_answer(message):
-    if message.text == 'Sayohat turlari':
+    if message.text == '✈️ Наши Туры':
         tour(message)
-        bot.send_message(message.chat.id, 'Sayohat turini tanlang')
+        bot.send_message(message.chat.id, 'Выберите наши туры')
 
-    elif message.text == 'Biz Milan bog\'laning':
+    elif message.text == '☎️Наш телефонный номер':
         print(message)
         bot.send_message(
             message.chat.id,
@@ -159,11 +156,13 @@ def keyboard_answer(message):
 
         bot.register_next_step_handler(message, start)
 
-    if message.text == 'Mehmonxonalar':
+    if message.text == '🏢Гостиницы':
         hotel(message)
 
+    if message.text == '📍Наш адрес':
+        location(message)
 
-    elif message.text == 'Назад':
+    elif message.text == '⬅️Назад':
         back_from_tour(message)
 
 
@@ -173,8 +172,7 @@ def start(message):
 
     bot.send_message(
         message.chat.id,
-        'Assalomu aleykum'
-        'Informatsiyani bilish uchun quyidagi tugmalardan birini bosing',
+        'Здраствуйте Выберите одно из следующих',
         reply_markup=markup
     )
 
@@ -186,50 +184,32 @@ def back_from_tour(message):
 
     bot.send_message(
         message.chat.id,
-        'Quyidagi tugmalardan birini bosing',
+        'Здраствуйте Выберите одно из следующих',
         reply_markup=markup
     )
 
     bot.register_next_step_handler(message, keyboard_answer)
 
 
-# def get_about(message):
-#     bot.send_message(message.chat.id, "https://telegra.ph/Our-Story-12-30")
-# def blog_menu(message):
-#     keyboard = contact()
-#     bot.reply_to(message, "https://telegra.ph/How-influince-Covid-19-12-29  ")
-#     bot.send_message(message.chat.id, "https://telegra.ph/Google-inks-pact-for-new-35-storey-office-12-30")
-#     bot.send_message(message.chat.id,
-#                      "https://telegra.ph/Second-divided-from-form-fish-beast-made-every-of-seas-all-gathered-us-saying-he-our-12-30")
-#     bot.send_message(message.chat.id,
-#                      "https://telegra.ph/Second-divided-from-form-fish-beast-made-every-of-seas-all-gathered-us-saying-he-our-12-30-2",
-#                      reply_markup=keyboard)
-#     bot.register_next_step_handler(message, get_about)
-#
-#
-# @bot.message_handler(commands=['start'])
-# def send_welcome(message):
-#     keyboard = blog()
-#     bot.reply_to(message, "https://telegra.ph/knjdnq-12-29")
-#     bot.send_message(message.chat.id, "https://telegra.ph/Mayami-beach-12-29")
-#     bot.send_message(message.chat.id, "https://telegra.ph/London-12-29-20")
-#     bot.send_message(message.chat.id, "https://telegra.ph/Dubay-12-29", reply_markup=keyboard)
-#     bot.register_next_step_handler(message, blog_menu)
+@bot.message_handler(commands=['contact'])
+def contact_command(message):
+    keyboard = book()
+    # data = data['results']
+
+    bot.send_message(message.chat.id, '', reply_markup=keyboard)
 
 
-# @bot.message_handler(commands=['blog'])
+@bot.message_handler(content_types=['contact'])
+def contact_message(message):
+    print(message.contact)
+    data = requests.post(f'http://127.0.0.1:8000/ru/api/application/create/', {
+        'phone': message.contact.phone_number,
+        'name': message.contact.first_name,
+        'surname': message.contact.last_name,
+    })
+    print(data.json())
+    bot.send_message(message.chat.id, 'Заявка принято, Спасибо вам мы выйдем вам на связь')
+    bot.register_next_step_handler(message, start)
 
 
-# bot.reply_to(message, "https://telegra.ph/How-influince-Covid-19-12-29  ")
-# bot.send_message(message.chat.id, "https://telegra.ph/Google-inks-pact-for-new-35-storey-office-12-30")
-# bot.send_message(message.chat.id, "https://telegra.ph/Second-divided-from-form-fish-beast-made-every-of-seas-all-gathered-us-saying-he-our-12-30")
-# bot.send_message(message.chat.id, "https://telegra.ph/Second-divided-from-form-fish-beast-made-every-of-seas-all-gathered-us-saying-he-our-12-30-2")
-
-
-# def get_menu(message):
-#     keyboard = types.ReplyKeyboardMarkup(row_width=1)
-#     keyboard.add(
-#         types.KeyboardButton('Share contact', request_contact=True),
-#     )
-#     bot.send_message(message.chat.id,'', reply_markup=keyboard())
 bot.polling()
